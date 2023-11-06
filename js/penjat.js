@@ -1,7 +1,7 @@
 let ganadas = 0;
 let jugadas = 0;
 let perdidas = 0;
-function inicia() 
+function inicia() {
   const opcio = prompt('1. Iniciar un joc\n2. Estadístiques\n3. Sortir');
   if (opcio == 1) {
     console.log("Bona sort");
