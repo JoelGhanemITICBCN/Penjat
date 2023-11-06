@@ -20,15 +20,10 @@ function penjat() {
   let victoria = false;
   let letraJugador = ""; //Letra jugada en ese momento
   let vides = 6;
-<<<<<<< HEAD
-  let palabraJugada = "";
-  let letrasDichas = "";
-  let palabraMal = "";
-=======
   let palabraJugada = ""; //Palabra con las letras correctas dichas por el jugador
   let letrasDichas = ""; //Todas las letras dichas
   let palabraMal = ""; //Palabra con las letras Incorrectas dichas por  el jugador
->>>>>>> 050e120 (penjat Prompt Fet)
+
 
   //For para mostrar las _
   for(let largoParaula = 0; largoParaula <= paraulaInicial.length-1; largoParaula++) {
@@ -38,26 +33,7 @@ function penjat() {
   while(!victoria && vides>0) {
     letraJugador = prompt("Digues una lletra");
     //COMPROBAR LA LETRA
-<<<<<<< HEAD
-    if(letraLimpia(letraJugador)){
-      if(!repetida(letraJugador,letrasDichas)) {
-        letrasDichas = letrasDichas + letraJugador;
-        if(esCorrecta(paraulaInicial,letraJugador)){
-          palabraJugada = palabraJugada + letraJugador; 
-        } else {
-          vides--;
-          palabraMal = palabraMal + letrasDichas;
-        }
-        //Compruebo victoria
-        if(palabraJugada === paraulaInicial) {
-          victoria = true;
-        }
-        if(vides <= 0) {
-          break;
-        }
-        console.log(`Correctes ${palabraJugada}`);
-        console.log(`Incorrectes ${palabraMal}`)
-=======
+
     if(letraLimpia(letraJugador) && !repetida(letraJugador,letrasDichas)) {
       letrasDichas = letrasDichas + letraJugador;
       if(esCorrecta(paraulaInicial,letraJugador)){
@@ -66,7 +42,6 @@ function penjat() {
       } else {
         vides--;
         palabraMal = palabraMal + letraJugador;
->>>>>>> 050e120 (penjat Prompt Fet)
       }
       console.log(`Incorrectes ${palabraMal}`);
       console.log(barras);
@@ -77,26 +52,17 @@ function penjat() {
   }
   if (victoria) {
     console.log(`VICTORIA, LA PARAULA ERA: ${paraulaInicial}`);
-<<<<<<< HEAD
-  } else {
-    console.log(`DERROTA, LA PARAULA ERA: ${paraulaInicial}`)
-=======
     ganadas++;
   } else {
     console.log(`DERROTA, LA PARAULA ERA: ${paraulaInicial}`);
     perdidas++;
->>>>>>> 050e120 (penjat Prompt Fet)
   }
 }
 
 function letraLimpia(letra) {
   if (letra !== null) {
-<<<<<<< HEAD
-    if (letra.length !== 1 || !esLetra(letra)) {
-=======
     if (letra.length !== 1 || !esLetra(letra)) { //Si hay mas de 1 caracter no es una letra solo
       console.log("Nomes una paraula");
->>>>>>> 050e120 (penjat Prompt Fet)
       return false;
     }
     return true;
@@ -105,41 +71,18 @@ function letraLimpia(letra) {
 }
 
 function esLetra(caracter){
-<<<<<<< HEAD
-  return /^[a-zA-Z]$/.test(caracter);
-=======
   return /^[a-zA-Z]$/.test(caracter); //Operador para comprobar que es una letra
->>>>>>> 050e120 (penjat Prompt Fet)
 }
 
 function repetida(letraJugador,letrasDichas) {
   for(let i = 0; i < letrasDichas.length; i++){
-<<<<<<< HEAD
-    if(letraJugador === letrasDichas[i]){
-=======
     if(letraJugador === letrasDichas[i]){ //Si la letra del jugador se encuentra en las letras diches esta repetida
->>>>>>> 050e120 (penjat Prompt Fet)
       return true;
     }
   }
   return false;
 }
 
-<<<<<<< HEAD
-
-function esCorrecta(paraulaInicial, letraJugador){
-  for(let i = 0; i < paraulaInicial.length; i++) {
-    //Si la letra es correcta
-    if(paraulaInicial[i] === letraJugador) {
-      console.log("letra correcta");
-      return true;
-    } else {
-      console.log("letra incorrecta");
-      return false;
-    }
-  }
-}
-=======
 function esCorrecta(paraulaInicial, letraJugador) {
   let letraCorrecta = false;  // Inicialmente asumimos que la letra no es correcta
   for (let i = 0; i < paraulaInicial.length; i++) {
@@ -184,4 +127,3 @@ function estadistiques() {
   console.log(`Partidas perdudes (${((perdidas / jugadas) * 100).toFixed(2)}%): ${perdidas}`);
 }
 
->>>>>>> 050e120 (penjat Prompt Fet)
