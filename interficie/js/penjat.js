@@ -1,64 +1,55 @@
 let ganadas = 0;
 let jugadas = 0;
 let perdidas = 0;
-function inicia() {
-  const opcio = prompt('1. Iniciar un joc\n2. Estadístiques\n3. Sortir');
-  if (opcio == 1) {
-    console.log("Bona sort");
-    novaPartida();
-  } else if (opcio == 2) {
-    console.log("Les teves estadistiques son:");
-    estadistiques();
-  } else {
-    console.log("Has sortit");
+
+function letras() {
+  let abecedario = "abcdefghijklmnopqrstuvwxyz".split('');
+  let abecedarioButton = document.getElementById("abecedari");
+  for (let i = 0; i < abecedario.length; i++) {
+    let boton = document.createElement("button");
+    boton.textContent = abecedario[i];
+    boton.id = abecedario[i];
+    boton.setAttribute("onclick", `clickBoton('${paraulaInicial},${abecedario[i]}', jocPenjat)`);
+    boton.innerHTML = abecedario[i];
+    abecedarioButton.appendChild(boton);
   }
 }
+/*
+function juego() {
+
+}
+*/
+
 function novaPartida() {
   jugadas++;
-  const paraulaInicial = prompt("Digues una paraula"); //Palabra del jugador
+  const paraulaInicial = prompt("Digues una paraula"); //Palabra del principio
   let barras = ""; //Muestra de la longitud de la palabra
-  let victoria = false;
   let letraJugador = ""; //Letra jugada en ese momento
-  let vides = 6;
+  let fallos = 0;
   let palabraJugada = ""; //Palabra con las letras correctas dichas por el jugador
   let letrasDichas = ""; //Todas las letras dichas
   let palabraMal = ""; //Palabra con las letras Incorrectas dichas por  el jugador
-
-
+  imatges(fallos);
+  letras();
+  //juego();
   //For para mostrar las _
-  for(let largoParaula = 0; largoParaula <= paraulaInicial.length-1; largoParaula++) {
-    barras+= "_ ";
+  for (let largoParaula = 0; largoParaula <= paraulaInicial.length - 1; largoParaula++) {
+    barras += "_ ";
   }
   console.log(barras);
-  while(!victoria && vides>0) {
-    letraJugador = prompt("Digues una lletra");
-    //COMPROBAR LA LETRA
-
-    if(letraLimpia(letraJugador) && !repetida(letraJugador,letrasDichas)) {
+  /*
       letrasDichas = letrasDichas + letraJugador;
-      if(esCorrecta(paraulaInicial,letraJugador)){
-        palabraJugada += letraJugador; 
-        barras = actualizarBarras(paraulaInicial,palabraJugada);
+      if (esCorrecta(paraulaInicial, letraJugador)) {
+
       } else {
-        vides--;
-        palabraMal = palabraMal + letraJugador;
+
       }
       console.log(`Incorrectes ${palabraMal}`);
       console.log(barras);
-    }
-    if (barras === paraulaInicial) {
-      victoria = true;
-    }
+   
   }
-  if (victoria) {
-    console.log(`VICTORIA, LA PARAULA ERA: ${paraulaInicial}`);
-    ganadas++;
-  } else {
-    console.log(`DERROTA, LA PARAULA ERA: ${paraulaInicial}`);
-    perdidas++;
-  }
+  */
 }
-
 function letraLimpia(letra) {
   if (letra !== null) {
     if (letra.length !== 1 || !esLetra(letra)) { //Si hay mas de 1 caracter no es una letra solo
@@ -70,13 +61,13 @@ function letraLimpia(letra) {
   return false;
 }
 
-function esLetra(caracter){
+function esLetra(caracter) {
   return /^[a-zA-Z]$/.test(caracter); //Operador para comprobar que es una letra
 }
 
-function repetida(letraJugador,letrasDichas) {
-  for(let i = 0; i < letrasDichas.length; i++){
-    if(letraJugador === letrasDichas[i]){ //Si la letra del jugador se encuentra en las letras diches esta repetida
+function repetida(letraJugador, letrasDichas) {
+  for (let i = 0; i < letrasDichas.length; i++) {
+    if (letraJugador === letrasDichas[i]) { //Si la letra del jugador se encuentra en las letras diches esta repetida
       return true;
     }
   }
@@ -115,15 +106,33 @@ function actualizarBarras(palabra, palabraJugada) {
     if (palabraJugada.includes(letra)) {
       barras += letra;
     } else {
-      barras += "_";
+      barras += "_ ";
     }
   }
   return barras;
 }
+
 function estadistiques() {
 
   console.log(`TOTAL DE PARTIDES: ${jugadas}`);
   console.log(`Partidas guanyades (${((ganadas / jugadas) * 100).toFixed(2)}%): ${ganadas}`);
   console.log(`Partidas perdudes (${((perdidas / jugadas) * 100).toFixed(2)}%): ${perdidas}`);
 }
+function imatges(fallos) {
+  let imagen = document.getElementById("imatgePenjat");
+  imagen.src = "../img/penjat_" + fallos + ".png";
+}
 
+function clickBoton(paraulaInicial,lletra) {
+  let palabraActual = "";
+  if (letraLimpia(lletra)) {
+    if (esCorrecta(paraulaInicial, letra)) {
+      palabraJugada += letraJugador;
+      barras
+    } else {
+      fallos++
+      palabraMal = palabraMal + letraJugador;
+    }
+  }
+  palabraActual.innerHTML = actualizarBarras(paraulaInicial, palabraJugada);
+}
