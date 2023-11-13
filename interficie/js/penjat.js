@@ -92,6 +92,9 @@ function hasGanado(paraulaInicial, palabraJugada) {
   for (let letra of letrasPalabra1) {
     const index = letrasPalabra2.indexOf(letra);
     if (index === -1) {
+      if(fallos == 6) {
+        alert `Has perdido la palabra era ${paraulaInicial}`;
+      }
       return false; // Si alguna letra de la primera palabra no está en la segunda palabra, retorna falso.
     }
     // Si la letra está en la segunda palabra, quítala para evitar contarla dos veces
