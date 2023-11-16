@@ -120,13 +120,10 @@ function victoria() {
   alert (`HAS GANADO, LA PALABRA ERA: ${paraulaInicial}`);
 }
 function bloqueaTodo() {
-  let abecedario = "abcdefghijklmnopqrstuvwxyz".split('');
-  let boton = document.getElementById("abecedari");
+  let abecedario = "abcdefghijklmnopqrstuvwxyz";
 
    for (let i = 0; i < abecedario.length; i++) {
-    boton.textContent = abecedario[i];
-    boton.id = abecedario[i];
-    boton.innerHTML = abecedario[i];
+    let boton = document.getElementById(abecedario.charAt(i));
    boton.disabled = true;
 
   }
