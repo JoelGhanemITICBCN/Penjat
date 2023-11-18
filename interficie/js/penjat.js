@@ -14,6 +14,7 @@ let enJuego = false; //Para que no se acepte iniciar partida en la misam partida
 
 //inicio una partida
 function novaPartida() {
+
   if(!enJuego) {
     enJuego = true;
     paraulaInicial = prompt("Digues una paraula"); //Palabra del principio
@@ -23,7 +24,12 @@ function novaPartida() {
     muestraBarras();
     letras(paraulaInicial);
 
-  }
+  } else {
+  window.location.reload();
+  enJuego = false;
+  setTimeout(novaPartida(),2000);
+    }
+
 }
 
 //muestro todos los botones 
@@ -114,32 +120,33 @@ function actualizarBarras() {
 
 //muestro las estadistiques
 function estadistiques() {
-  let pGanadas = `Partidas guanyades (${((localStorage.getItem('pGanadas')/ localStorage.getItem('pTotales')) * 100).toFixed(2)}%): ${localStorage.getItem('pGanadas')}`;
-  let pPerdidas = `Partidas perdudes (${((localStorage.getItem('pPerdidas') / localStorage.getItem('pTotales')) * 100).toFixed(2)}%): ${localStorage.getItem('pPerdidas')}`;
-  let pTotales =`TOTAL DE PARTIDES: ${jugadas}`;
+  let pGanadas = `Partidas guanyades (${((Number(localStorage.getItem('pGanadas')) / Number(localStorage.getItem('pTotales'))) * 100).toFixed(2)}%): ${localStorage.getItem('pGanadas')}`;
+  let pPerdidas = `Partidas perdudes (${((Number(localStorage.getItem('pPerdidas')) / Number(localStorage.getItem('pTotales'))) * 100).toFixed(2)}%): ${localStorage.getItem('pPerdidas')}`;
+  let pTotales =`TOTAL DE PARTIDES: ${localStorage.getItem('pTotales')}`;
 
-  //Muestro y recupero elementos del localStorage
-  document.getElementById("stats").innerHTML = `${pTotales}` + localStorage.getItem('pTotales');
-  document.getElementById("stats").innerHTML +=`<br> ${pGanadas}` + localStorage.getItem('pGanadas');
-  document.getElementById("stats").innerHTML +=`<br> ${pPerdidas}` + localStorage.getItem('pPerdidas');
+  // Muestro y recupero elementos del localStorage
+  document.getElementById("stats").innerHTML = `${pTotales}`;
+  document.getElementById("stats").innerHTML += `<br> ${pGanadas}`;
+  document.getElementById("stats").innerHTML += `<br> ${pPerdidas}`;
 }
 
-//Guardo las stats en localStorage
+// Guardo las stats en localStorage
 function guardaP() {
-  let cantidad = localStorage.getItem('pTotales');
-  cantidad ++;
-  localStorage.setItem('pTotales',cantidad);
+  let cantidad = Number(localStorage.getItem('pTotales'));
+  cantidad++;
+  localStorage.setItem('pTotales', cantidad);
 }
 function guardaV() {
-  let cantidad = localStorage.getItem('pGanadas');
-  cantidad ++;
-  localStorage.setItem('pGanadas',cantidad);
+  let cantidad = Number(localStorage.getItem('pGanadas'));
+  cantidad++;
+  localStorage.setItem('pGanadas', cantidad);
 }
 function guardaD() {
-  let cantidad = localStorage.getItem('pPerdidas');
-  cantidad ++;
-  localStorage.setItem('pPerdidas',cantidad);
+  let cantidad = Number(localStorage.getItem('pPerdidas'));
+  cantidad++;
+  localStorage.setItem('pPerdidas', cantidad);
 }
+
 //modifica la imgen segun los fallos
 function imatges() {
   let imagen = document.getElementById("imatgePenjat");
