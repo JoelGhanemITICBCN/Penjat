@@ -18,6 +18,7 @@ function novaPartida() {
     while (paraulaInicial == "") {
     paraulaInicial = prompt("Has de dir una paraula"); //Palabra del principio
     }
+    paraulaInicial = paraulaInicial.toLowerCase(); //Lo paso a minusculas
     guardaP();
     imatges();
     muestraBarras();
