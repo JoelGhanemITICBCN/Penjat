@@ -1,7 +1,4 @@
 //globales
-let ganadas = 0;
-let jugadas = 0;
-let perdidas = 0;
 let timer; //Para que se meustren las ale5rtas con delay
 let barras = ""; //Muestra de la longitud de la palabra
 let letraJugador = ""; //Letra jugada en ese momento
@@ -11,24 +8,23 @@ let letrasDichas = ""; //Todas las letras dichas
 let palabraMal = ""; //Palabra con las letras Incorrectas dichas por  el jugador
 let paraulaInicial = ""; //Palabra a adivinar
 let enJuego = false; //Para que no se acepte iniciar partida en la misam partida
+let repetida = false; //Es para que no vuelva a mostrar las letras al reiniciar en medio de una partida
 
 //inicio una partida
 function novaPartida() {
-
   if(!enJuego) {
     enJuego = true;
     paraulaInicial = prompt("Digues una paraula"); //Palabra del principio
-    jugadas++;
+    while (paraulaInicial == "") {
+    paraulaInicial = prompt("Has de dir una paraula"); //Palabra del principio
+    }
     guardaP();
     imatges();
     muestraBarras();
-    letras(paraulaInicial);
-
+    if (!repetida) { letras(paraulaInicial);}
   } else {
-  window.location.reload();
-  enJuego = false;
-  setTimeout(novaPartida(),2000);
-    }
+    restart();
+  }
 
 }
 
@@ -54,7 +50,6 @@ function clickBoton(lletra) {
   if (esCorrecta(lletra)) {
     palabraJugada += lletra;
     bloquea(lletra);
-    actualizarBarras();
   } else {
     if(fallos < 6){
       fallos++;
@@ -62,6 +57,7 @@ function clickBoton(lletra) {
       bloquea(lletra);
       palabraMal = palabraMal + lletra;
     }else {
+      repetida = false;
       guardaD();
       derrota();
     }
@@ -111,6 +107,7 @@ function actualizarBarras() {
     }
   }
   if(hasGanado()) {
+    repetida = false;
     guardaV();
     victoria();
   }
@@ -120,27 +117,34 @@ function actualizarBarras() {
 
 //muestro las estadistiques
 function estadistiques() {
-  let pGanadas = `Partidas guanyades (${((Number(localStorage.getItem('pGanadas')) / Number(localStorage.getItem('pTotales'))) * 100).toFixed(2)}%): ${localStorage.getItem('pGanadas')}`;
-  let pPerdidas = `Partidas perdudes (${((Number(localStorage.getItem('pPerdidas')) / Number(localStorage.getItem('pTotales'))) * 100).toFixed(2)}%): ${localStorage.getItem('pPerdidas')}`;
-  let pTotales =`TOTAL DE PARTIDES: ${localStorage.getItem('pTotales')}`;
+  if(localStorage.getItem('pTotales') > 0) {
+    let pGanadas = `Partidas guanyades (${((Number(localStorage.getItem('pGanadas')) / Number(localStorage.getItem('pTotales'))) * 100).toFixed(2)}%): ${localStorage.getItem('pGanadas')}`;
+    let pPerdidas = `Partidas perdudes (${((Number(localStorage.getItem('pPerdidas')) / Number(localStorage.getItem('pTotales'))) * 100).toFixed(2)}%): ${localStorage.getItem('pPerdidas')}`;
+    let pTotales =`TOTAL DE PARTIDES: ${localStorage.getItem('pTotales')}`;
 
-  // Muestro y recupero elementos del localStorage
-  document.getElementById("stats").innerHTML = `${pTotales}`;
-  document.getElementById("stats").innerHTML += `<br> ${pGanadas}`;
-  document.getElementById("stats").innerHTML += `<br> ${pPerdidas}`;
+    // Muestro y recupero elementos del localStorage
+    document.getElementById("stats").innerHTML = `${pTotales}`;
+    document.getElementById("stats").innerHTML += `<br> ${pGanadas}`;
+    document.getElementById("stats").innerHTML += `<br> ${pPerdidas}`;
+  } else {
+    document.getElementById("stats").innerHTML = `Encara no has jugat cap partida`;
+  }
 }
 
 // Guardo las stats en localStorage
+// partida
 function guardaP() {
   let cantidad = Number(localStorage.getItem('pTotales'));
   cantidad++;
   localStorage.setItem('pTotales', cantidad);
 }
+//victoria
 function guardaV() {
   let cantidad = Number(localStorage.getItem('pGanadas'));
   cantidad++;
   localStorage.setItem('pGanadas', cantidad);
 }
+//derrota
 function guardaD() {
   let cantidad = Number(localStorage.getItem('pPerdidas'));
   cantidad++;
@@ -152,10 +156,56 @@ function imatges() {
   let imagen = document.getElementById("imatgePenjat");
   imagen.src = "../img/penjat_" + fallos + ".png";
 }
+
+//funcion que bloquea el boton presionado
+function bloquea(lletra) {
+  let boton = document.getElementById(lletra);
+  boton.disabled = true;
+}
+
+function muestraBarras() {
+  //For para mostrar las _
+  for (let largoParaula = 0; largoParaula <= paraulaInicial.length - 1; largoParaula++) {
+    barras += "_ ";
+  }
+  document.getElementById("jocPenjat").innerHTML = barras;
+}
+
+function esborra() {
+  localStorage.setItem('pPerdidas', 0);
+  localStorage.setItem('pGanadas', 0);
+  localStorage.setItem('pTotales', 0);
+}
+
+
+function restart() {
+  timer; //Para que se meustren las ale5rtas con delay
+  barras = ""; //Muestra de la longitud de la palabra
+  letraJugador = ""; //Letra jugada en ese momento
+  fallos = 0;
+  palabraJugada = ""; //Palabra con las letras correctas dichas por el jugador
+  letrasDichas = ""; //Todas las letras dichas
+  palabraMal = ""; //Palabra con las letras Incorrectas dichas por  el jugador
+  paraulaInicial = ""; //Palabra a adivinar
+  enJuego = false; //Para que no se acepte iniciar partida en la misam partida
+  repetida = true;
+  desbloqueaTodo();
+  novaPartida();
+}
+
+function desbloqueaTodo() {
+  let abecedario = "abcdefghijklmnopqrstuvwxyz";
+
+  for (let i = 0; i < abecedario.length; i++) {
+    let boton = document.getElementById(abecedario.charAt(i));
+    boton.disabled = false;
+
+  }
+}
+
 //comprobar derrota
 function derrota() {
-  bloqueaTodo();
-  perdidas++;
+  bloqueaTodo() ;
   timer = setTimeout(function() {alert (`Has perdido la palabra era ${paraulaInicial}`)},1000);
   setTimeout(function(){window.location.reload()},2000);
 }
@@ -163,7 +213,6 @@ function derrota() {
 //comprobar victoria
 function victoria() {
   bloqueaTodo();
-  ganadas++;
   timer = setTimeout(function() {alert (`HAS GANADO, LA PALABRA ERA: ${paraulaInicial}`)},1000);
   setTimeout(function(){window.location.reload()},2000);
 }
@@ -193,5 +242,34 @@ function muestraBarras() {
 }
 
 function esborra() {
-  localStorage.clear();
+  localStorage.setItem('pPerdidas', 0);
+  localStorage.setItem('pGanadas', 0);
+  localStorage.setItem('pTotales', 0);
+}
+
+
+function restart() {
+  //reinicio todas las estadisticas de la partida
+  timer; //Para que se meustren las ale5rtas con delay
+  barras = ""; //Muestra de la longitud de la palabra
+  letraJugador = ""; //Letra jugada en ese momento
+  fallos = 0;
+  palabraJugada = ""; //Palabra con las letras correctas dichas por el jugador
+  letrasDichas = ""; //Todas las letras dichas
+  palabraMal = ""; //Palabra con las letras Incorrectas dichas por  el jugador
+  paraulaInicial = ""; //Palabra a adivinar
+  enJuego = false; //Para que no se acepte iniciar partida en la misam partida
+  repetida = true;
+  desbloqueaTodo();
+  novaPartida();
+}
+
+function desbloqueaTodo() {
+  let abecedario = "abcdefghijklmnopqrstuvwxyz";
+
+  for (let i = 0; i < abecedario.length; i++) {
+    let boton = document.getElementById(abecedario.charAt(i));
+    boton.disabled = false;
+
+  }
 }
